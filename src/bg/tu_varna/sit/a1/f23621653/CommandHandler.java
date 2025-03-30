@@ -11,14 +11,15 @@ public class CommandHandler {
         this.xmlDocument = xmlDocument;
         this.commands = new HashMap<>();
 
-        commands.put("help",new HelpCommand());
+        commands.put("help", new HelpCommand());
+        commands.put("open", new OpenCommand());
     }
 
-    public void executeCommand(String commandName, String[] args){
-        Command command=commands.get(commandName);
-        if(command!=null){
-            command.execute(args,xmlDocument);
-        }else {
+    public void executeCommand(String commandName, String[] args) {
+        Command command = commands.get(commandName);
+        if (command != null) {
+            command.execute(args, xmlDocument);
+        } else {
             System.out.println("Unknown command. Type 'help' for a list of commands");
         }
     }

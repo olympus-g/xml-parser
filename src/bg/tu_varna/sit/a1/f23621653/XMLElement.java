@@ -8,6 +8,7 @@ import java.util.Map;
 public class XMLElement {
     //will be used to represent a single xml element
 
+    private String tagName;
     private String id;
     private Map<String, String> attributes = new HashMap<>();
     private List<XMLElement> children = new ArrayList<>();
@@ -15,6 +16,10 @@ public class XMLElement {
 
     public XMLElement(String id) {
         this.id = id;
+    }
+
+    public String getTagName() {
+        return tagName;
     }
 
     public String getId() {
@@ -33,15 +38,15 @@ public class XMLElement {
         attributes.remove(key);
     }
 
-    public void addChild(XMLElement child){
+    public void addChild(XMLElement child) {
         children.add(child);
     }
 
-    public List<XMLElement> getChildren(){
+    public List<XMLElement> getChildren() {
         return children;
     }
 
-    public String getText(){
+    public String getText() {
         return text;
     }
 
@@ -49,5 +54,28 @@ public class XMLElement {
         this.text = text;
     }
 
-    //add method for formatting later, maybe???
+    public String toFormattedXML(int indentLevel) {
+        StringBuilder sb = new StringBuilder();
+        String indent = "    ".repeat(indentLevel);
+
+        sb.append(indent).append("<").append(tagName);
+        for (Map.Entry<String, String> entry : attributes.entrySet()) {
+            sb.append(" ").append(entry.getKey()).append("=\"").append(entry.getValue()).append("\"");
+        }
+        if (children.isEmpty() && (text == null || text.isBlank())) {
+            sb.append((" />\n"));
+        } else {
+            sb.append(">\n");
+            if (text != null && !text.isBlank()) {
+                sb.append(indent).append("    ").append(text.trim()).append("\n");
+            }
+
+            for (XMLElement child : children
+            ) {
+                sb.append(child.toFormattedXML(indentLevel + 1));
+            }
+            sb.append(indent).append("</").append(tagName).append(">\n");
+        }
+        return sb.toString();
+    }
 }

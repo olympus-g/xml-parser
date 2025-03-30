@@ -1,6 +1,6 @@
 package bg.tu_varna.sit.a1.f23621653;
 
-public class HelpCommand implements Command{
+public class HelpCommand implements Command {
     @Override
     public void execute(String[] args, XMLDocument xmlDocument) {
         System.out.println("Available commands:");
