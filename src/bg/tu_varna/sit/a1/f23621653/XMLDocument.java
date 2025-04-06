@@ -8,6 +8,7 @@ public class XMLDocument {
     //will be used to represent the entire xml document
     private XMLElement root;
     private Map<String, XMLElement> elementMap = new HashMap<>();
+    private String currentFilePath;
 
     public XMLDocument() {
         this.root = null;
@@ -21,6 +22,14 @@ public class XMLDocument {
 
     public XMLElement getRoot() {
         return root;
+    }
+
+    public String getCurrentFilePath() {
+        return currentFilePath;
+    }
+
+    public void setCurrentFilePath(String currentFilePath) {
+        this.currentFilePath = currentFilePath;
     }
 
     private void indexElements(XMLElement element) {
@@ -54,6 +63,7 @@ public class XMLDocument {
         try (FileWriter writer = new FileWriter(filePath)) {
             writer.write(root.toFormattedXML(0));
             System.out.println("XML document saved successfully at " + filePath);
+            setCurrentFilePath(filePath);
         } catch (IOException e) {
             System.out.println("Error saving XML document: " + e.getMessage());
         }
@@ -92,6 +102,7 @@ public class XMLDocument {
                 }
             }
             setRoot(rootElement);
+            setCurrentFilePath(filePath);
             System.out.println("XML document loaded successfully");
         } catch (IOException e) {
             System.out.println("Error loading XML document: " + e.getMessage());
