@@ -22,6 +22,10 @@ public class XMLElement {
         return tagName;
     }
 
+    public void setTagName(String tagName) {
+        this.tagName = tagName;
+    }
+
     public String getId() {
         return id;
     }

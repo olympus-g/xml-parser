@@ -82,7 +82,8 @@ public class XMLDocument {
                 if (line.isEmpty()) continue;
                 if (line.startsWith("<") && !line.startsWith("</")) {
                     String elementName = extractTagName(line);
-                    XMLElement newElement = new XMLElement(elementName);
+                    XMLElement newElement = new XMLElement(null);//change later
+                    newElement.setTagName(elementName);
                     extractAttributes(newElement, line);
 
                     if (currentElement != null) {

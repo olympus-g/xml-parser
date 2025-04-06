@@ -16,6 +16,7 @@ public class CommandHandler {
         commands.put("save", new SaveCommand());
         commands.put("saveas",new SaveAsCommand());
         commands.put("close",new CloseCommand());
+        commands.put("print",new PrintCommand());
     }
 
     public void executeCommand(String commandName, String[] args) {
