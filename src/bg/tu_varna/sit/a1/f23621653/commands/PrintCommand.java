@@ -1,6 +1,8 @@
-package bg.tu_varna.sit.a1.f23621653;
+package bg.tu_varna.sit.a1.f23621653.commands;
 
-public class PrintCommand implements Command{
+import bg.tu_varna.sit.a1.f23621653.XMLDocument;
+
+public class PrintCommand implements Command {
     @Override
     public void execute(String[] args, XMLDocument xmlDocument) {
         if(xmlDocument.getRoot()==null){

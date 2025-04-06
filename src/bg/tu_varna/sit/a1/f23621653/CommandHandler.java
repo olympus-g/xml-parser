@@ -1,5 +1,7 @@
 package bg.tu_varna.sit.a1.f23621653;
 
+import bg.tu_varna.sit.a1.f23621653.commands.*;
+
 import java.util.HashMap;
 import java.util.Map;
 

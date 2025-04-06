@@ -1,4 +1,6 @@
-package bg.tu_varna.sit.a1.f23621653;
+package bg.tu_varna.sit.a1.f23621653.commands;
+
+import bg.tu_varna.sit.a1.f23621653.XMLDocument;
 
 public class SaveCommand implements Command {
     @Override

@@ -1,6 +1,8 @@
-package bg.tu_varna.sit.a1.f23621653;
+package bg.tu_varna.sit.a1.f23621653.commands;
 
-public class CloseCommand implements Command{
+import bg.tu_varna.sit.a1.f23621653.XMLDocument;
+
+public class CloseCommand implements Command {
     @Override
     public void execute(String[] args, XMLDocument xmlDocument) {
         xmlDocument.setRoot(null);
