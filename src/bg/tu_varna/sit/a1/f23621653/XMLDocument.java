@@ -1,8 +1,9 @@
 package bg.tu_varna.sit.a1.f23621653;
 
+import bg.tu_varna.sit.a1.f23621653.commands.SelectCommand;
+
 import java.io.*;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class XMLDocument {
     //will be used to represent the entire xml document
@@ -69,39 +70,84 @@ public class XMLDocument {
         }
     }
 
-    public void loadFromFile(String filePath) {
-        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
-            String line;
-            XMLElement currentElement = null;
-            XMLElement rootElement = null;
-            Map<Integer, XMLElement> elementMap = new HashMap<>();
-            int level = 0;
+    private List<String>readLines(BufferedReader reader) throws IOException{
+        List<String> lines=new ArrayList<>();
+        String line;
+        while((line=reader.readLine())!=null){
+            line=line.trim();
+            if(!line.isEmpty()){
+                lines.add(line);
+            }
+        }
+        return lines;
+    }
 
-            while ((line = reader.readLine()) != null) {
-                line = line.trim();
-                if (line.isEmpty()) continue;
-                if (line.startsWith("<") && !line.startsWith("</")) {
-                    String elementName = extractTagName(line);
-                    XMLElement newElement = new XMLElement(null);//change later
-                    newElement.setTagName(elementName);
-                    extractAttributes(newElement, line);
+    private XMLElement parseXML(List<String> lines) {
+        Map<Integer, XMLElement> levelMap = new HashMap<>();
+        Set<String> existingIds = new HashSet<>();
+        Map<String, Integer> duplicateCountMap = new HashMap<>();
+        int autoIdCounter = 1;
 
-                    if (currentElement != null) {
-                        currentElement.addChild(newElement);
-                    } else rootElement = newElement;
+        int level = 0;
+        XMLElement currentElement = null;
+        XMLElement rootElement = null;
 
-                    elementMap.put(level, newElement);
-                    currentElement = newElement;
-                    level++;
-                } else if (line.startsWith("</")) {
-                    level--;
-                    currentElement = elementMap.get(level - 1);
-                } else {
-                    if (currentElement != null) {
-                        currentElement.setText(line);
+        for (String line : lines) {
+            if (line.startsWith("<") && !line.startsWith("</")) {
+                String tagName = extractTagName(line);
+                Map<String, String> attributes = extractAttributes(line);
+                String rawId = attributes.get("id");
+                String finalId;
+
+                if (rawId != null) {
+                    if (!existingIds.contains(rawId)) {
+                        finalId = rawId;
+                    } else {
+                        int count = duplicateCountMap.getOrDefault(rawId, 1);
+                        finalId = rawId + "_" + count;
+                        duplicateCountMap.put(rawId, count + 1);
                     }
+                } else {
+                    finalId = "auto_id_" + autoIdCounter++;
+                }
+
+                existingIds.add(finalId);
+
+                XMLElement newElement = new XMLElement(finalId);
+                newElement.setId(finalId);
+                newElement.setAttribute("id",finalId);
+                newElement.setTagName(tagName);
+
+                for (Map.Entry<String, String> attr : attributes.entrySet()) {
+                    newElement.setAttribute(attr.getKey(), attr.getValue());
+                }
+
+                if (currentElement != null) {
+                    currentElement.addChild(newElement);
+                } else {
+                    rootElement = newElement;
+                }
+
+                levelMap.put(level, newElement);
+                currentElement = newElement;
+                level++;
+            } else if (line.startsWith("</")) {
+                level--;
+                currentElement = level > 0 ? levelMap.get(level - 1) : null;
+            } else {
+                if (currentElement != null) {
+                    currentElement.setText(line);
                 }
             }
+        }
+
+        return rootElement;
+    }
+
+    public void loadFromFile(String filePath) {
+        try(BufferedReader reader=new BufferedReader(new FileReader(filePath))){
+            List<String>lines=readLines(reader);
+            XMLElement rootElement=parseXML(lines);
             setRoot(rootElement);
             setCurrentFilePath(filePath);
             System.out.println("XML document loaded successfully");
@@ -119,22 +165,23 @@ public class XMLDocument {
         return line.substring(1, spaceIndex);
     }
 
-    private void extractAttributes(XMLElement element, String line) {
+    private Map<String,String> extractAttributes( String line) {
+        Map<String,String> attributes=new HashMap<>();
         int startIndex = line.indexOf(" ");
         int endIndex = line.indexOf(">");
 
-        if (startIndex == -1 || startIndex > endIndex) return;
+        if (startIndex == -1 || startIndex > endIndex) return attributes;
 
         String attrString = line.substring(startIndex + 1, endIndex);
         String[] pairs = attrString.split("\\s+");
-        for (String pair : pairs
-        ) {
+        for (String pair : pairs) {
             String[] keyValue = pair.split("=");
             if (keyValue.length == 2) {
                 String key = keyValue[0];
                 String value = keyValue[1].replace("\"", "");
-                element.setAttribute(key, value);
+                attributes.put(key, value);
             }
         }
+        return attributes;
     }
 }

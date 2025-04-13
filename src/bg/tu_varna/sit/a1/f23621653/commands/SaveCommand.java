@@ -11,5 +11,6 @@ public class SaveCommand implements Command {
             return;
         }
         xmlDocument.saveToFile(filePath);
+        System.out.println("Successfully saved file");
     }
 }

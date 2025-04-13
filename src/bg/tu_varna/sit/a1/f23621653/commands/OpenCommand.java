@@ -16,5 +16,6 @@ public class OpenCommand implements Command {
             return;
         }
         xmlDocument.loadFromFile(filePath);
+        System.out.println("Successfully opened file");
     }
 }

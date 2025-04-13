@@ -30,6 +30,10 @@ public class XMLElement {
         return id;
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public String getAttribute(String key) {
         return attributes.getOrDefault(key, null);
     }
