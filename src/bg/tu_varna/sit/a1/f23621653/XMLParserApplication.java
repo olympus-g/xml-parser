@@ -19,11 +19,8 @@ public class XMLParserApplication {
                 break;
             }
 
-            String[] parts = input.split("\\s+");
-            String commandName = parts[0];
-            String[] commandArgs = new String[parts.length - 1];
-            System.arraycopy(parts, 1, commandArgs, 0, commandArgs.length);
-            commandHandler.executeCommand(commandName, commandArgs);
+            CommandParser.ParsedCommand parsed = CommandParser.parse(input);
+            commandHandler.executeCommand(parsed.getCommandName(), parsed.getCommandArgs());
         }
         scanner.close();
     }
