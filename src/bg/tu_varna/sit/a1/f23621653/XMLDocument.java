@@ -1,7 +1,5 @@
 package bg.tu_varna.sit.a1.f23621653;
 
-import bg.tu_varna.sit.a1.f23621653.commands.SelectCommand;
-
 import java.io.*;
 import java.util.*;
 
@@ -48,14 +46,6 @@ public class XMLDocument {
         return elementMap.get(id);
     }
 
-    public void print() {
-        if (root != null) {
-            System.out.println();
-        } else {
-            System.out.println("No XML document loaded");
-        }
-    }
-
     public void saveToFile(String filePath) {
         if (root == null) {
             System.out.println("No XML document to save");
@@ -70,12 +60,12 @@ public class XMLDocument {
         }
     }
 
-    private List<String>readLines(BufferedReader reader) throws IOException{
-        List<String> lines=new ArrayList<>();
+    private List<String> readLines(BufferedReader reader) throws IOException {
+        List<String> lines = new ArrayList<>();
         String line;
-        while((line=reader.readLine())!=null){
-            line=line.trim();
-            if(!line.isEmpty()){
+        while ((line = reader.readLine()) != null) {
+            line = line.trim();
+            if (!line.isEmpty()) {
                 lines.add(line);
             }
         }
@@ -115,7 +105,7 @@ public class XMLDocument {
 
                 XMLElement newElement = new XMLElement(finalId);
                 newElement.setId(finalId);
-                newElement.setAttribute("id",finalId);
+                newElement.setAttribute("id", finalId);
                 newElement.setTagName(tagName);
 
                 for (Map.Entry<String, String> attr : attributes.entrySet()) {
@@ -145,9 +135,9 @@ public class XMLDocument {
     }
 
     public void loadFromFile(String filePath) {
-        try(BufferedReader reader=new BufferedReader(new FileReader(filePath))){
-            List<String>lines=readLines(reader);
-            XMLElement rootElement=parseXML(lines);
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            List<String> lines = readLines(reader);
+            XMLElement rootElement = parseXML(lines);
             setRoot(rootElement);
             setCurrentFilePath(filePath);
             System.out.println("XML document loaded successfully");
@@ -165,8 +155,8 @@ public class XMLDocument {
         return line.substring(1, spaceIndex);
     }
 
-    private Map<String,String> extractAttributes( String line) {
-        Map<String,String> attributes=new HashMap<>();
+    private Map<String, String> extractAttributes(String line) {
+        Map<String, String> attributes = new HashMap<>();
         int startIndex = line.indexOf(" ");
         int endIndex = line.indexOf(">");
 

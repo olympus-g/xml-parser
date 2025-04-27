@@ -20,6 +20,9 @@ public class CommandHandler {
         commands.put("close",new CloseCommand());
         commands.put("print",new PrintCommand());
         commands.put("select",new SelectCommand());
+        commands.put("set",new SetCommand());
+        commands.put("text",new TextCommand());
+        commands.put("delete",new DeleteCommand());
     }
 
     public void executeCommand(String commandName, String[] args) {
