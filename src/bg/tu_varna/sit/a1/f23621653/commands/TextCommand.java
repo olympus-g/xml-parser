@@ -6,6 +6,11 @@ import bg.tu_varna.sit.a1.f23621653.XMLElement;
 public class TextCommand implements Command{
     @Override
     public void execute(String[] args, XMLDocument xmlDocument) {
+        if (args.length != 1) {
+            System.out.println("Usage: text <id>");
+            return;
+        }
+
         String id =args[0];
         XMLElement element=xmlDocument.getElementById(id);
         if(element==null){
