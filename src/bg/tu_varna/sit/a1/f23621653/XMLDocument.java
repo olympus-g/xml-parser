@@ -109,7 +109,9 @@ public class XMLDocument {
                 newElement.setTagName(tagName);
 
                 for (Map.Entry<String, String> attr : attributes.entrySet()) {
-                    newElement.setAttribute(attr.getKey(), attr.getValue());
+                    if(!attr.getKey().equals("id")) {
+                        newElement.setAttribute(attr.getKey(), attr.getValue());
+                    }
                 }
 
                 if (currentElement != null) {
@@ -140,7 +142,7 @@ public class XMLDocument {
             XMLElement rootElement = parseXML(lines);
             setRoot(rootElement);
             setCurrentFilePath(filePath);
-            System.out.println("XML document loaded successfully");
+            System.out.println("XML document opened successfully");
         } catch (IOException e) {
             System.out.println("Error loading XML document: " + e.getMessage());
         }

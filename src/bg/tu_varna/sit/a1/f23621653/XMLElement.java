@@ -1,16 +1,13 @@
 package bg.tu_varna.sit.a1.f23621653;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class XMLElement {
     //will be used to represent a single xml element
 
     private String tagName;
     private String id;
-    private Map<String, String> attributes = new HashMap<>();
+    private Map<String, String> attributes = new LinkedHashMap<>();
     private List<XMLElement> children = new ArrayList<>();
     private String text = "";
 
@@ -44,6 +41,10 @@ public class XMLElement {
 
     public void removeAttribute(String key) {
         attributes.remove(key);
+    }
+
+    public Map<String,String>getAttributes(){
+        return  attributes;
     }
 
     public void addChild(XMLElement child) {
