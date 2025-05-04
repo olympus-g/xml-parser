@@ -21,8 +21,8 @@ public class SelectCommand implements Command {
         String value = element.getAttribute(key);
         if (value == null) {
             System.out.println("Attribute \"" + key + "\" not found in element with id \"" + id + "\".");
-        } else{
-            System.out.println("Value of attribute \""+key+"\": "+value);
+        } else {
+            System.out.println("Value of attribute \"" + key + "\": " + value);
         }
     }
 }

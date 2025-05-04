@@ -109,7 +109,7 @@ public class XMLDocument {
                 newElement.setTagName(tagName);
 
                 for (Map.Entry<String, String> attr : attributes.entrySet()) {
-                    if(!attr.getKey().equals("id")) {
+                    if (!attr.getKey().equals("id")) {
                         newElement.setAttribute(attr.getKey(), attr.getValue());
                     }
                 }

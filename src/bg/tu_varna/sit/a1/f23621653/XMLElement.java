@@ -43,8 +43,8 @@ public class XMLElement {
         attributes.remove(key);
     }
 
-    public Map<String,String>getAttributes(){
-        return  attributes;
+    public Map<String, String> getAttributes() {
+        return attributes;
     }
 
     public void addChild(XMLElement child) {
