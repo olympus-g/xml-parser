@@ -83,8 +83,14 @@ public class XMLDocument {
         XMLElement rootElement = null;
 
         for (String line : lines) {
-            if (line.startsWith("<") && !line.startsWith("</")) {
-                String tagName = extractTagName(line);
+            line = line.trim();
+
+            if (line.startsWith("<") && line.endsWith(">") && !line.startsWith("</")) {
+                int spaceIndex = line.indexOf(" ");
+                int endIndex = line.indexOf(">");
+                String tagName = spaceIndex == -1 || spaceIndex > endIndex ?
+                        line.substring(1, endIndex) :
+                        line.substring(1, spaceIndex);
                 Map<String, String> attributes = extractAttributes(line);
                 String rawId = attributes.get("id");
                 String finalId;
@@ -105,13 +111,19 @@ public class XMLDocument {
 
                 XMLElement newElement = new XMLElement(finalId);
                 newElement.setId(finalId);
-                newElement.setAttribute("id", finalId);
                 newElement.setTagName(tagName);
+                newElement.getAttributes().putAll(attributes);
 
-                for (Map.Entry<String, String> attr : attributes.entrySet()) {
-                    if (!attr.getKey().equals("id")) {
-                        newElement.setAttribute(attr.getKey(), attr.getValue());
+                int closeTagIndex = line.indexOf("</" + tagName + ">");
+                if (closeTagIndex != -1) {
+                    String textContent = line.substring(endIndex + 1, closeTagIndex).trim();
+                    newElement.setText(textContent);
+                    if (currentElement != null) {
+                        currentElement.addChild(newElement);
+                    } else {
+                        rootElement = newElement;
                     }
+                    continue;
                 }
 
                 if (currentElement != null) {
@@ -123,10 +135,12 @@ public class XMLDocument {
                 levelMap.put(level, newElement);
                 currentElement = newElement;
                 level++;
-            } else if (line.startsWith("</")) {
+            }
+            else if (line.startsWith("</")) {
                 level--;
                 currentElement = level > 0 ? levelMap.get(level - 1) : null;
-            } else {
+            }
+            else {
                 if (currentElement != null) {
                     currentElement.setText(line);
                 }
@@ -135,6 +149,7 @@ public class XMLDocument {
 
         return rootElement;
     }
+
 
     public void loadFromFile(String filePath) {
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
