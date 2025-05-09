@@ -1,0 +1,31 @@
+<bookstore id="0" name="My Bookstore">
+
+    <book id="1" category="fantasy">
+        <title>Guards! Guards!</title>
+        <author>Terry Pratchett</author>
+        <year>1989</year>
+        <price>12.00</price>
+    </book>
+
+    <book id="2" category="historical-fiction">
+        <title>Weyward</title>
+        <author>Emilia Hart</author>
+        <year>2023</year>
+        <price>19.99</price>
+    </book>
+
+    <book id="3" category="fantasy">
+        <title>Oathbringer</title>
+        <author>Brandon Sanderson</author>
+        <year>2017</year>
+        <price>39.99</price>
+    </book>
+
+    <book id="3" category="classics">
+        <title>Dracula</title>
+        <author>Bram Stoker</author>
+        <year>1897</year>
+        <price>15.99</price>
+    </book>
+
+</bookstore>

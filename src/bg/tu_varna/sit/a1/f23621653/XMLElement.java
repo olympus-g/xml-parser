@@ -71,7 +71,9 @@ public class XMLElement {
         for (Map.Entry<String, String> entry : attributes.entrySet()) {
             sb.append(" ").append(entry.getKey()).append("=\"").append(entry.getValue()).append("\"");
         }
-        if (children.isEmpty() && (text == null || text.isBlank())) {
+        if (children.isEmpty() && (text != null) && !text.isBlank()) {
+            sb.append(">").append(text.trim()).append("</").append(tagName).append(">\n");
+        } else if (children.isEmpty() && (text == null || text.isBlank())) {
             sb.append((" />\n"));
         } else {
             sb.append(">\n");
@@ -79,8 +81,7 @@ public class XMLElement {
                 sb.append(indent).append("    ").append(text.trim()).append("\n");
             }
 
-            for (XMLElement child : children
-            ) {
+            for (XMLElement child : children) {
                 sb.append(child.toFormattedXML(indentLevel + 1));
             }
             sb.append(indent).append("</").append(tagName).append(">\n");

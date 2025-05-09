@@ -86,11 +86,8 @@ public class XMLDocument {
             line = line.trim();
 
             if (line.startsWith("<") && line.endsWith(">") && !line.startsWith("</")) {
-                int spaceIndex = line.indexOf(" ");
                 int endIndex = line.indexOf(">");
-                String tagName = spaceIndex == -1 || spaceIndex > endIndex ?
-                        line.substring(1, endIndex) :
-                        line.substring(1, spaceIndex);
+                String tagName = extractTagName(line);
                 Map<String, String> attributes = extractAttributes(line);
                 String rawId = attributes.get("id");
                 String finalId;
@@ -110,9 +107,10 @@ public class XMLDocument {
                 existingIds.add(finalId);
 
                 XMLElement newElement = new XMLElement(finalId);
-                newElement.setId(finalId);
                 newElement.setTagName(tagName);
                 newElement.getAttributes().putAll(attributes);
+                newElement.setId(finalId);
+                newElement.setAttribute("id", finalId);
 
                 int closeTagIndex = line.indexOf("</" + tagName + ">");
                 if (closeTagIndex != -1) {
@@ -135,12 +133,10 @@ public class XMLDocument {
                 levelMap.put(level, newElement);
                 currentElement = newElement;
                 level++;
-            }
-            else if (line.startsWith("</")) {
+            } else if (line.startsWith("</")) {
                 level--;
                 currentElement = level > 0 ? levelMap.get(level - 1) : null;
-            }
-            else {
+            } else {
                 if (currentElement != null) {
                     currentElement.setText(line);
                 }
