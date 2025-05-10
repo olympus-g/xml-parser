@@ -14,7 +14,7 @@ public class XMLParserApplication {
             System.out.println("Enter a command: ");
             String input = scanner.nextLine().trim();
 
-            if (input.equalsIgnoreCase("exit")) {
+            if (input.equalsIgnoreCase(CommandName.EXIT.getCommandName())) {
                 System.out.println("Exiting...");
                 break;
             }

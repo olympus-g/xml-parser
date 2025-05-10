@@ -13,20 +13,20 @@ public class CommandHandler {
         this.xmlDocument = xmlDocument;
         this.commands = new HashMap<>();
 
-        commands.put("help", new HelpCommand());
-        commands.put("open", new OpenCommand());
-        commands.put("save", new SaveCommand());
-        commands.put("saveas", new SaveAsCommand());
-        commands.put("close", new CloseCommand());
-        commands.put("print", new PrintCommand());
-        commands.put("select", new SelectCommand());
-        commands.put("set", new SetCommand());
-        commands.put("text", new TextCommand());
-        commands.put("delete", new DeleteCommand());
-        commands.put("children", new ChildrenCommand());
-        commands.put("child", new ChildCommand());
-        commands.put("newchild", new NewchildCommand());
-        commands.put("xpath",new XPathCommand());
+        commands.put(CommandName.HELP.getCommandName(), new HelpCommand());
+        commands.put(CommandName.OPEN.getCommandName(), new OpenCommand());
+        commands.put(CommandName.SAVE.getCommandName(), new SaveCommand());
+        commands.put(CommandName.SAVE_AS.getCommandName(), new SaveAsCommand());
+        commands.put(CommandName.CLOSE.getCommandName(), new CloseCommand());
+        commands.put(CommandName.PRINT.getCommandName(), new PrintCommand());
+        commands.put(CommandName.SELECT.getCommandName(), new SelectCommand());
+        commands.put(CommandName.SET.getCommandName(), new SetCommand());
+        commands.put(CommandName.TEXT.getCommandName(), new TextCommand());
+        commands.put(CommandName.DELETE.getCommandName(), new DeleteCommand());
+        commands.put(CommandName.CHILDREN.getCommandName(), new ChildrenCommand());
+        commands.put(CommandName.CHILD.getCommandName(), new ChildCommand());
+        commands.put(CommandName.NEWCHILD.getCommandName(), new NewchildCommand());
+        commands.put(CommandName.XPATH.getCommandName(),new XPathCommand());
     }
 
     public void executeCommand(String commandName, String[] args) {
