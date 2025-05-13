@@ -1,4 +1,4 @@
-package bg.tu_varna.sit.a1.f23621653.commands.xml_specific;
+package bg.tu_varna.sit.a1.f23621653.commands;
 
 import bg.tu_varna.sit.a1.f23621653.XMLDocument;
 import bg.tu_varna.sit.a1.f23621653.XMLElement;
