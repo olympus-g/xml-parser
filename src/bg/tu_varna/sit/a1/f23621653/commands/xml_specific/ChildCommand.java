@@ -1,8 +1,8 @@
-package bg.tu_varna.sit.a1.f23621653.commands;
+package bg.tu_varna.sit.a1.f23621653.commands.xml_specific;
 
 import bg.tu_varna.sit.a1.f23621653.XMLDocument;
 import bg.tu_varna.sit.a1.f23621653.XMLElement;
-import org.w3c.dom.xpath.XPathResult;
+import bg.tu_varna.sit.a1.f23621653.commands.contracts.Command;
 
 import java.util.List;
 

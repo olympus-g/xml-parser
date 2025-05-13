@@ -10,6 +10,7 @@ public class XMLElement {
     private Map<String, String> attributes = new LinkedHashMap<>();
     private List<XMLElement> children = new ArrayList<>();
     private String text = "";
+    private String namespace;
 
     public XMLElement(String id) {
         this.id = id;
@@ -63,11 +64,31 @@ public class XMLElement {
         this.text = text;
     }
 
+    public String getNamespace() {
+        return namespace;
+    }
+
+    public void setNamespace(String namespace) {
+        this.namespace = namespace;
+    }
+
     public String toFormattedXML(int indentLevel) {
         StringBuilder sb = new StringBuilder();
         String indent = "    ".repeat(indentLevel);
+        String namespace = "";
+        if (tagName.contains(":")) {
+            String[] parts = tagName.split(":");
+            if ((parts.length==2)){
+                namespace=parts[0];
+                tagName=parts[1];
+            }
+        }
 
-        sb.append(indent).append("<").append(tagName);
+        sb.append(indent).append("<");
+        if (!namespace.isBlank()) {
+            sb.append(namespace).append(":");
+        }
+        sb.append(tagName);
         for (Map.Entry<String, String> entry : attributes.entrySet()) {
             sb.append(" ").append(entry.getKey()).append("=\"").append(entry.getValue()).append("\"");
         }
@@ -84,7 +105,11 @@ public class XMLElement {
             for (XMLElement child : children) {
                 sb.append(child.toFormattedXML(indentLevel + 1));
             }
-            sb.append(indent).append("</").append(tagName).append(">\n");
+            sb.append(indent).append("</");
+            if(!namespace.isBlank()) {
+                sb.append(namespace).append(":");
+            }
+            sb.append(tagName).append(">\n");
         }
         return sb.toString();
     }

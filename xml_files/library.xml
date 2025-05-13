@@ -1,0 +1,22 @@
+<library xmlns:bk="http://example.com/books" xmlns:mag="http://example.com/magazines">
+    <bk:item id="1">
+        <bk:title>Effective Java</bk:title>
+        <bk:author>Joshua Bloch</bk:author>
+        <bk:publisher>Addison-Wesley</bk:publisher>
+    </bk:item>
+    <bk:item id="2">
+        <bk:title>Clean Code</bk:title>
+        <bk:author>Robert C. Martin</bk:author>
+        <bk:publisher>Prentice Hall</bk:publisher>
+    </bk:item>
+    <mag:item id="1">
+        <mag:title>National Geographic</mag:title>
+        <mag:author>Various</mag:author>
+        <mag:publisher>National Geographic Partners</mag:publisher>
+    </mag:item>
+    <mag:item id="2">
+        <mag:title>Scientific American</mag:title>
+        <mag:author>Various</mag:author>
+        <mag:publisher>Springer Nature</mag:publisher>
+    </mag:item>
+</library>

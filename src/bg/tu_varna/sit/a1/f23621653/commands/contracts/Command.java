@@ -1,4 +1,4 @@
-package bg.tu_varna.sit.a1.f23621653.commands;
+package bg.tu_varna.sit.a1.f23621653.commands.contracts;
 
 import bg.tu_varna.sit.a1.f23621653.XMLDocument;
 

@@ -165,7 +165,14 @@ public class XMLDocument {
         if (spaceIndex == -1 || spaceIndex > endIndex) {
             spaceIndex = endIndex;
         }
-        return line.substring(1, spaceIndex);
+        String fullTag=line.substring(1,spaceIndex);
+        if (fullTag.contains(":")) {
+            String[] parts = fullTag.split(":");
+            String namespace = parts[0];
+            String tagName = parts[1];
+            return namespace+":" + tagName;
+        }
+        return fullTag;
     }
 
     private Map<String, String> extractAttributes(String line) {

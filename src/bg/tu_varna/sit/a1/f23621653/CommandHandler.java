@@ -1,6 +1,9 @@
 package bg.tu_varna.sit.a1.f23621653;
 
-import bg.tu_varna.sit.a1.f23621653.commands.*;
+import bg.tu_varna.sit.a1.f23621653.commands.contracts.Command;
+import bg.tu_varna.sit.a1.f23621653.commands.xml_specific.XPathCommand;
+import bg.tu_varna.sit.a1.f23621653.commands.general.*;
+import bg.tu_varna.sit.a1.f23621653.commands.xml_specific.*;
 
 import java.util.HashMap;
 import java.util.Map;
