@@ -6,7 +6,7 @@ import java.util.*;
 public class XMLDocument {
     //will be used to represent the entire xml document
     private XMLElement root;
-    private Map<String, XMLElement> elementMap = new HashMap<>();
+    private final Map<String, XMLElement> elementMap = new HashMap<>();
     private String currentFilePath;
 
     public XMLDocument() {
@@ -36,8 +36,7 @@ public class XMLDocument {
         if (element.getId() != null) {
             elementMap.put(element.getId(), element);
         }
-        for (XMLElement child : element.getChildren()
-        ) {
+        for (XMLElement child : element.getChildren()) {
             indexElements(child);
         }
     }
@@ -87,7 +86,18 @@ public class XMLDocument {
 
             if (line.startsWith("<") && line.endsWith(">") && !line.startsWith("</")) {
                 int endIndex = line.indexOf(">");
-                String tagName = extractTagName(line);
+                String rawTagName = extractTagName(line);
+                String[] tagParts = rawTagName.split(":", 2);
+                String namespace = null;
+                String tagName;
+
+                if (tagParts.length == 2) {
+                    namespace = tagParts[0];
+                    tagName = tagParts[1];
+                } else {
+                    tagName = rawTagName;
+                }
+
                 Map<String, String> attributes = extractAttributes(line);
                 String rawId = attributes.get("id");
                 String finalId;
@@ -107,12 +117,13 @@ public class XMLDocument {
                 existingIds.add(finalId);
 
                 XMLElement newElement = new XMLElement(finalId);
+                newElement.setNamespace(namespace);
                 newElement.setTagName(tagName);
-                newElement.getAttributes().putAll(attributes);
                 newElement.setId(finalId);
                 newElement.setAttribute("id", finalId);
+                newElement.getAttributes().putAll(attributes);
 
-                int closeTagIndex = line.indexOf("</" + tagName + ">");
+                int closeTagIndex = line.indexOf("</" + rawTagName + ">");
                 if (closeTagIndex != -1) {
                     String textContent = line.substring(endIndex + 1, closeTagIndex).trim();
                     newElement.setText(textContent);
@@ -146,7 +157,6 @@ public class XMLDocument {
         return rootElement;
     }
 
-
     public void loadFromFile(String filePath) {
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             List<String> lines = readLines(reader);
@@ -165,14 +175,7 @@ public class XMLDocument {
         if (spaceIndex == -1 || spaceIndex > endIndex) {
             spaceIndex = endIndex;
         }
-        String fullTag=line.substring(1,spaceIndex);
-        if (fullTag.contains(":")) {
-            String[] parts = fullTag.split(":");
-            String namespace = parts[0];
-            String tagName = parts[1];
-            return namespace+":" + tagName;
-        }
-        return fullTag;
+        return line.substring(1, spaceIndex).trim();
     }
 
     private Map<String, String> extractAttributes(String line) {

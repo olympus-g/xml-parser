@@ -7,10 +7,11 @@ public class XMLElement {
 
     private String tagName;
     private String id;
-    private Map<String, String> attributes = new LinkedHashMap<>();
-    private List<XMLElement> children = new ArrayList<>();
+    private final Map<String, String> attributes = new LinkedHashMap<>();
+    private final List<XMLElement> children = new ArrayList<>();
     private String text = "";
     private String namespace;
+    private XMLElement parent;
 
     public XMLElement(String id) {
         this.id = id;
@@ -49,11 +50,20 @@ public class XMLElement {
     }
 
     public void addChild(XMLElement child) {
+        child.setParent(this);
         children.add(child);
     }
 
     public List<XMLElement> getChildren() {
         return children;
+    }
+
+    public XMLElement getParent() {
+        return parent;
+    }
+
+    public void setParent(XMLElement parent) {
+        this.parent = parent;
     }
 
     public String getText() {
@@ -75,42 +85,30 @@ public class XMLElement {
     public String toFormattedXML(int indentLevel) {
         StringBuilder sb = new StringBuilder();
         String indent = "    ".repeat(indentLevel);
-        String namespace = "";
-        if (tagName.contains(":")) {
-            String[] parts = tagName.split(":");
-            if ((parts.length==2)){
-                namespace=parts[0];
-                tagName=parts[1];
-            }
-        }
+        String qualifiedName = (namespace != null && !namespace.isBlank()) ? namespace + ":" + tagName : tagName;
 
-        sb.append(indent).append("<");
-        if (!namespace.isBlank()) {
-            sb.append(namespace).append(":");
-        }
-        sb.append(tagName);
+        sb.append(indent).append("<").append(qualifiedName);
         for (Map.Entry<String, String> entry : attributes.entrySet()) {
             sb.append(" ").append(entry.getKey()).append("=\"").append(entry.getValue()).append("\"");
         }
-        if (children.isEmpty() && (text != null) && !text.isBlank()) {
-            sb.append(">").append(text.trim()).append("</").append(tagName).append(">\n");
-        } else if (children.isEmpty() && (text == null || text.isBlank())) {
-            sb.append((" />\n"));
-        } else {
-            sb.append(">\n");
-            if (text != null && !text.isBlank()) {
-                sb.append(indent).append("    ").append(text.trim()).append("\n");
-            }
 
+        if (children.isEmpty() && (text == null || text.isBlank())) {
+            sb.append(" />\n");
+            return sb.toString();
+        }
+        sb.append(">");
+
+        if (text != null && !text.isBlank()) {
+            sb.append(text.trim());
+        }
+        if (!children.isEmpty()) {
+            sb.append("\n");
             for (XMLElement child : children) {
                 sb.append(child.toFormattedXML(indentLevel + 1));
             }
-            sb.append(indent).append("</");
-            if(!namespace.isBlank()) {
-                sb.append(namespace).append(":");
-            }
-            sb.append(tagName).append(">\n");
+            sb.append(indent);
         }
+        sb.append("</").append(qualifiedName).append(">\n");
         return sb.toString();
     }
 }
