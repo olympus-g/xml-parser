@@ -272,10 +272,7 @@ public class XPathCommand implements Command {
             }
         }
         String attributeValue = element.getAttribute(filterKey);
-        if (attributeValue.equals(filterValue)) {
-            return true;
-        }
-        return false;
+        return attributeValue != null && attributeValue.equals(filterValue);
     }
 
     private List<XMLElement> filterByIndex(List<XMLElement> elements, int index) {
