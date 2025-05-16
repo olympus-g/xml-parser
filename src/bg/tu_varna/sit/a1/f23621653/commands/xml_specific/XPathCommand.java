@@ -1,5 +1,6 @@
 package bg.tu_varna.sit.a1.f23621653.commands.xml_specific;
 
+import bg.tu_varna.sit.a1.f23621653.commands.enums.Axis;
 import bg.tu_varna.sit.a1.f23621653.models.XMLDocument;
 import bg.tu_varna.sit.a1.f23621653.models.XMLElement;
 import bg.tu_varna.sit.a1.f23621653.commands.contracts.Command;
@@ -57,27 +58,35 @@ public class XPathCommand implements Command {
         for (String part : parts) {
             if (part.isEmpty()) continue;
 
-            String axis = extractAxis(part);
+            String axisName = extractAxis(part);
             String tagName = extractTagName(part);
             String namespace = extractNamespace(part);
             Integer index = extractIndex(part);
             String attributeAccess = extractAttributeAccess(part);
             String[] filter = extractFilter(part);
 
+            Axis axis;
+            try {
+                axis= Axis.fromString(axisName);
+            }catch (IllegalArgumentException e){
+                System.out.println(e.getMessage());
+                return new ArrayList<>();
+            }
+
             switch (axis) {
-                case "self":
+                case SELF:
                     currentElements = selfAxis(currentElements, tagName, namespace);
                     break;
-                case "child":
+                case CHILD:
                     currentElements = childAxis(currentElements, tagName, namespace, filter);
                     break;
-                case "parent":
+                case PARENT:
                     currentElements = parentAxis(currentElements, tagName, namespace);
                     break;
-                case "ancestor":
+                case ANCESTOR:
                     currentElements = ancestorAxis(currentElements, tagName, namespace);
                     break;
-                case "descendant":
+                case DESCENDANT:
                     currentElements = descendantAxis(currentElements, tagName, namespace, filter);
                     break;
                 default:
