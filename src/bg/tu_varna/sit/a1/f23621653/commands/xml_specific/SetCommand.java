@@ -1,7 +1,7 @@
 package bg.tu_varna.sit.a1.f23621653.commands.xml_specific;
 
-import bg.tu_varna.sit.a1.f23621653.XMLDocument;
-import bg.tu_varna.sit.a1.f23621653.XMLElement;
+import bg.tu_varna.sit.a1.f23621653.models.XMLDocument;
+import bg.tu_varna.sit.a1.f23621653.models.XMLElement;
 import bg.tu_varna.sit.a1.f23621653.commands.contracts.Command;
 
 public class SetCommand implements Command {

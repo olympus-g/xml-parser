@@ -1,4 +1,4 @@
-package bg.tu_varna.sit.a1.f23621653;
+package bg.tu_varna.sit.a1.f23621653.commands.core;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +31,7 @@ public class CommandParser {
             if (c == '\"') {
                 insideQuotes = !insideQuotes;
             } else if (c == ' ' && !insideQuotes) {
-                if (currentArg.length() > 0) {
+                if (!currentArg.isEmpty()) {
                     args.add(currentArg.toString());
                     currentArg.setLength(0);
                 }
@@ -39,10 +39,10 @@ public class CommandParser {
                 currentArg.append(c);
             }
         }
-        if (currentArg.length() > 0) {
+        if (!currentArg.isEmpty()) {
             args.add(currentArg.toString());
         }
-        String commandName = args.remove(0);
+        String commandName = args.removeFirst();
         String[] commandArgs = args.toArray(new String[0]);
         return new ParsedCommand(commandName, commandArgs);
     }

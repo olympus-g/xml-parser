@@ -1,7 +1,7 @@
 package bg.tu_varna.sit.a1.f23621653.commands.xml_specific;
 
-import bg.tu_varna.sit.a1.f23621653.XMLDocument;
-import bg.tu_varna.sit.a1.f23621653.XMLElement;
+import bg.tu_varna.sit.a1.f23621653.models.XMLDocument;
+import bg.tu_varna.sit.a1.f23621653.models.XMLElement;
 import bg.tu_varna.sit.a1.f23621653.commands.contracts.Command;
 
 import java.util.List;
@@ -31,7 +31,7 @@ public class ChildrenCommand implements Command {
         System.out.println("Attributes of children of element with id \"" + id + "\":");
 
         for (XMLElement child : children) {
-            StringBuffer tagBuilder = new StringBuffer();
+            StringBuilder tagBuilder = new StringBuilder();
             tagBuilder.append("<").append(child.getTagName());
             for (Map.Entry<String, String> attr : child.getAttributes().entrySet()) {
                 tagBuilder.append(" ").append(attr.getKey()).append("=\"").append(attr.getValue()).append("\"");

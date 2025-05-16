@@ -1,4 +1,4 @@
-package bg.tu_varna.sit.a1.f23621653;
+package bg.tu_varna.sit.a1.f23621653.commands.enums;
 
 public enum CommandName {
     OPEN("open"),
@@ -17,7 +17,7 @@ public enum CommandName {
     NEWCHILD("newchild"),
     XPATH("xpath");
 
-    private String commandName;
+    private final String commandName;
     CommandName(String commandName) {
         this.commandName = commandName;
     }

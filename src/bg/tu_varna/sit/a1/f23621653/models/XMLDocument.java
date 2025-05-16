@@ -1,4 +1,4 @@
-package bg.tu_varna.sit.a1.f23621653;
+package bg.tu_varna.sit.a1.f23621653.models;
 
 import java.io.*;
 import java.util.*;
