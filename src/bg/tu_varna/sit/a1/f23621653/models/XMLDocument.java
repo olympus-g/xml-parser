@@ -3,8 +3,15 @@ package bg.tu_varna.sit.a1.f23621653.models;
 import java.io.*;
 import java.util.*;
 
+/**
+ * The {@code XMLDocument} class represents an entire XML document, providing methods
+ * for managing the document structure, including loading from and saving to files,
+ * indexing elements by their IDs, and accessing individual elements by ID.
+ * <p>
+ * This class acts as a wrapper around a hierarchical XML structure rooted at a single
+ * {@link XMLElement} node.
+ */
 public class XMLDocument {
-    //will be used to represent the entire xml document
     private XMLElement root;
     private final Map<String, XMLElement> elementMap = new HashMap<>();
     private String currentFilePath;
@@ -31,6 +38,11 @@ public class XMLDocument {
         this.currentFilePath = currentFilePath;
     }
 
+    /**
+     * Recursively indexes all elements in the document, allowing fast lookup by ID.
+     *
+     * @param element The element to index, along with all its descendants.
+     */
     private void indexElements(XMLElement element) {
         if (element == null) return;
         if (element.getId() != null) {
@@ -43,6 +55,18 @@ public class XMLDocument {
 
     public XMLElement getElementById(String id) {
         return elementMap.get(id);
+    }
+
+    public void loadFromFile(String filePath) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            List<String> lines = readLines(reader);
+            XMLElement rootElement = parseXML(lines);
+            setRoot(rootElement);
+            setCurrentFilePath(filePath);
+            System.out.println("XML document opened successfully");
+        } catch (IOException e) {
+            System.out.println("Error loading XML document: " + e.getMessage());
+        }
     }
 
     public void saveToFile(String filePath) {
@@ -59,6 +83,13 @@ public class XMLDocument {
         }
     }
 
+    /**
+     * Reads all non-empty lines from a BufferedReader, trimming whitespace.
+     *
+     * @param reader The BufferedReader to read lines from.
+     * @return A list of trimmed, non-empty lines.
+     * @throws IOException If an error occurs while reading the lines.
+     */
     private List<String> readLines(BufferedReader reader) throws IOException {
         List<String> lines = new ArrayList<>();
         String line;
@@ -71,6 +102,12 @@ public class XMLDocument {
         return lines;
     }
 
+    /**
+     * Parses a list of XML lines into a tree of XMLElements, creating a root element.
+     *
+     * @param lines The lines representing the XML document.
+     * @return The root element of the parsed XML tree.
+     */
     private XMLElement parseXML(List<String> lines) {
         Map<Integer, XMLElement> levelMap = new HashMap<>();
         Set<String> existingIds = new HashSet<>();
@@ -157,18 +194,12 @@ public class XMLDocument {
         return rootElement;
     }
 
-    public void loadFromFile(String filePath) {
-        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
-            List<String> lines = readLines(reader);
-            XMLElement rootElement = parseXML(lines);
-            setRoot(rootElement);
-            setCurrentFilePath(filePath);
-            System.out.println("XML document opened successfully");
-        } catch (IOException e) {
-            System.out.println("Error loading XML document: " + e.getMessage());
-        }
-    }
-
+    /**
+     * Extracts the tag name from an XML element line.
+     *
+     * @param line The line containing the XML element.
+     * @return The tag name without attributes or angle brackets.
+     */
     private String extractTagName(String line) {
         int spaceIndex = line.indexOf(" ");
         int endIndex = line.indexOf(">");
@@ -178,6 +209,12 @@ public class XMLDocument {
         return line.substring(1, spaceIndex).trim();
     }
 
+    /**
+     * Extracts the attributes from an XML element line as a map of key-value pairs.
+     *
+     * @param line The line containing the XML element.
+     * @return A map of attribute names and their corresponding values.
+     */
     private Map<String, String> extractAttributes(String line) {
         Map<String, String> attributes = new HashMap<>();
         int startIndex = line.indexOf(" ");

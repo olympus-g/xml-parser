@@ -2,9 +2,13 @@ package bg.tu_varna.sit.a1.f23621653.models;
 
 import java.util.*;
 
+/**
+ * Represents a single XML element within an XML document.
+ * <p>
+ * This class is designed to support hierarchical XML structures, allowing each element to
+ * have its own children and parent, effectively forming a tree structure.
+ */
 public class XMLElement {
-    //will be used to represent a single xml element
-
     private String tagName;
     private String id;
     private final Map<String, String> attributes = new LinkedHashMap<>();
@@ -82,6 +86,15 @@ public class XMLElement {
         this.namespace = namespace;
     }
 
+    /**
+     * Returns a formatted XML representation of this element and its children.
+     * <p>
+     * This method generates an indented, human-readable XML string, including
+     * all attributes, text content, and child elements.
+     *
+     * @param indentLevel the current level of indentation (used for formatting)
+     * @return the formatted XML string
+     */
     public String toFormattedXML(int indentLevel) {
         StringBuilder sb = new StringBuilder();
         String indent = "    ".repeat(indentLevel);

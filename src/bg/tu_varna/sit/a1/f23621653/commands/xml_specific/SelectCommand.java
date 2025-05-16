@@ -4,7 +4,24 @@ import bg.tu_varna.sit.a1.f23621653.models.XMLDocument;
 import bg.tu_varna.sit.a1.f23621653.models.XMLElement;
 import bg.tu_varna.sit.a1.f23621653.commands.contracts.Command;
 
+/**
+ * Command to select and display the value of a specific attribute
+ * from an XML element identified by its id.
+ */
 public class SelectCommand implements Command {
+    /**
+     * Executes the select command.
+     * <p>
+     * Expects exactly two arguments:
+     * <ul>
+     *      <li>id - The element ID.</li>
+     *      <li>key - The attribute key.</li>
+     * </ul>
+     * Prints the attribute value if found, or an error message otherwise.
+     *
+     * @param args        Command arguments: element id and attribute key.
+     * @param xmlDocument The XMLDocument containing the elements.
+     */
     @Override
     public void execute(String[] args, XMLDocument xmlDocument) {
         if (args.length != 2) {

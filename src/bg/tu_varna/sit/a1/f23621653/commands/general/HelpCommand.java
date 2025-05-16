@@ -3,7 +3,20 @@ package bg.tu_varna.sit.a1.f23621653.commands.general;
 import bg.tu_varna.sit.a1.f23621653.models.XMLDocument;
 import bg.tu_varna.sit.a1.f23621653.commands.contracts.Command;
 
+/**
+ * Command that displays a list of all available commands and their usage.
+ * <p>
+ * This helps users understand what commands are supported by the application
+ * and how to use them properly.
+ * </p>
+ */
 public class HelpCommand implements Command {
+    /**
+     * Executes the help command, printing the list of supported commands and their descriptions.
+     *
+     * @param args        Command arguments (ignored for this command).
+     * @param xmlDocument The XMLDocument instance (not used in this command).
+     */
     @Override
     public void execute(String[] args, XMLDocument xmlDocument) {
         System.out.println("Available commands:");

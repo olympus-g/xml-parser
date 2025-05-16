@@ -1,5 +1,9 @@
 package bg.tu_varna.sit.a1.f23621653.commands.enums;
 
+/**
+ * Enum representing the supported command names in the XML parser.
+ * Each command corresponds to a specific operation within the application.
+ */
 public enum CommandName {
     OPEN("open"),
     CLOSE("close"),

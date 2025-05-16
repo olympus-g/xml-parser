@@ -4,7 +4,25 @@ import bg.tu_varna.sit.a1.f23621653.models.XMLDocument;
 import bg.tu_varna.sit.a1.f23621653.models.XMLElement;
 import bg.tu_varna.sit.a1.f23621653.commands.contracts.Command;
 
+/**
+ * Command to set or update an attribute of a specific XML element.
+ */
 public class SetCommand implements Command {
+    /**
+     * Executes the set command.
+     * <p>
+     * Expects exactly three arguments:
+     * <ul>
+     *     <li>id - The element ID.</li>
+     *     <li>key - The attribute key.</li>
+     *     <li>newValue - The new value for the attribute.</li>
+     * </ul>
+     * Sets the attribute to the new value, creating it if it doesn't exist,
+     * and prints appropriate confirmation messages.
+     *
+     * @param args        Command arguments: element id, attribute key, and new value.
+     * @param xmlDocument The XMLDocument containing the elements.
+     */
     @Override
     public void execute(String[] args, XMLDocument xmlDocument) {
         if (args.length != 3) {

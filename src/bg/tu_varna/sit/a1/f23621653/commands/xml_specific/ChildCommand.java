@@ -6,7 +6,21 @@ import bg.tu_varna.sit.a1.f23621653.commands.contracts.Command;
 
 import java.util.List;
 
+/**
+ * Command to retrieve and print the nth child element of a specified XML element.
+ */
 public class ChildCommand implements Command {
+    /**
+     * Executes the child command. Expects exactly two arguments:
+     * <ul>
+     *     <li>id - The ID of the parent element.</li>
+     *     <li>n - The index of the child element to retrieve.</li>
+     * </ul>
+     * Prints an error message if arguments are invalid or the element/child is not found.
+     *
+     * @param args        Command arguments: id and child index.
+     * @param xmlDocument The XMLDocument to operate on.
+     */
     @Override
     public void execute(String[] args, XMLDocument xmlDocument) {
         if (args.length != 2) {

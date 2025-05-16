@@ -6,7 +6,20 @@ import bg.tu_varna.sit.a1.f23621653.commands.contracts.Command;
 
 import java.util.*;
 
+/**
+ * Command that evaluates a simplified XPath expression starting from a specified element.
+ * <p>
+ * Supports axes like self, child, parent, ancestor, descendant, as well as
+ * filtering by tag name, namespace prefix, index, and attribute-based predicates.
+ */
 public class XPathCommand implements Command {
+    /**
+     * Executes the XPath command.
+     *
+     * @param args       Command arguments; expects an element id and an XPath expression
+     *                   (e.g., {"rootId", "descendant::book[@category=\"fiction\"]"}).
+     * @param xmlDocument The XML document to query.
+     */
     @Override
     public void execute(String[] args, XMLDocument xmlDocument) {
         if (args.length != 2) {
@@ -30,6 +43,13 @@ public class XPathCommand implements Command {
         }
     }
 
+    /**
+     * Evaluates a simplified XPath expression starting from a root element.
+     *
+     * @param root       The starting element for the XPath evaluation.
+     * @param expression The XPath expression to evaluate.
+     * @return A list of matching elements based on the XPath expression.
+     */
     private List<XMLElement> evaluateXPath(XMLElement root, String expression) {
         String[] parts = expression.split("/");
         List<XMLElement> currentElements = List.of(root);
@@ -49,7 +69,7 @@ public class XPathCommand implements Command {
                     currentElements = selfAxis(currentElements, tagName, namespace);
                     break;
                 case "child":
-                    currentElements = findMatchingElements(currentElements, tagName, namespace, filter);
+                    currentElements = childAxis(currentElements, tagName, namespace, filter);
                     break;
                 case "parent":
                     currentElements = parentAxis(currentElements, tagName, namespace);
@@ -77,12 +97,26 @@ public class XPathCommand implements Command {
         return currentElements;
     }
 
+    /**
+     * Checks if an element matches the specified namespace and tag name.
+     *
+     * @param element   The element to check.
+     * @param namespace The expected namespace, or null to ignore namespace.
+     * @param tagName   The expected tag name, or "*" to match any tag.
+     * @return True if the element matches the namespace and tag name, otherwise false.
+     */
     private boolean matchesNamespaceAndTag(XMLElement element, String namespace, String tagName) {
         boolean namespaceMatches = (namespace == null) || namespace.equals(element.getNamespace());
         boolean tagNameMatches = tagName.equals("*") || tagName.equals(element.getTagName());
         return namespaceMatches && tagNameMatches;
     }
 
+    /**
+     * Extracts the axis from an XPath step.
+     *
+     * @param part The XPath step (e.g., "child::book" or "ancestor::chapter").
+     * @return The axis part of the step, defaulting to "child" if not specified.
+     */
     private String extractAxis(String part) {
         if (part.contains("::")) {
             return part.split("::")[0];
@@ -90,6 +124,12 @@ public class XPathCommand implements Command {
         return "child";
     }
 
+    /**
+     * Extracts the namespace prefix from an XPath step, if present.
+     *
+     * @param part The XPath step (e.g., "ns:book" or "book").
+     * @return The namespace prefix, or null if none is present.
+     */
     private String extractNamespace(String part) {
         if (part.contains("::")) {
             part = part.split("::")[1];
@@ -100,6 +140,12 @@ public class XPathCommand implements Command {
         return null;
     }
 
+    /**
+     * Extracts the tag name from an XPath step.
+     *
+     * @param part The XPath step (e.g., "book" or "ns:book").
+     * @return The tag name without the namespace or filters.
+     */
     private String extractTagName(String part) {
         if (part.contains("::")) {
             part = part.split("::")[1];
@@ -113,6 +159,12 @@ public class XPathCommand implements Command {
         return part;
     }
 
+    /**
+     * Extracts the index from an XPath step if present.
+     *
+     * @param part The XPath step (e.g., "book[2]").
+     * @return The index if present, or null if not.
+     */
     private Integer extractIndex(String part) {
         if (part.contains("[") && part.endsWith("]")) {
             try {
@@ -124,6 +176,12 @@ public class XPathCommand implements Command {
         return null;
     }
 
+    /**
+     * Extracts attribute access from an XPath step, if present.
+     *
+     * @param part The XPath step (e.g., "book(@id)").
+     * @return The attribute name, or null if not present.
+     */
     private String extractAttributeAccess(String part) {
         if (part.contains("(@") && part.endsWith(")")) {
             return part.substring(part.indexOf("(@") + 2, part.length() - 1);
@@ -131,6 +189,12 @@ public class XPathCommand implements Command {
         return null;
     }
 
+    /**
+     * Extracts a filter condition from an XPath step if present.
+     *
+     * @param part The XPath step (e.g., "book(author=\"Smith\")").
+     * @return A two-element array containing the filter key and value, or null if no filter is present.
+     */
     private String[] extractFilter(String part) {
         if (part.contains("(") && part.endsWith(")")) {
             int start = part.indexOf('(');
@@ -143,10 +207,27 @@ public class XPathCommand implements Command {
         return null;
     }
 
+    /**
+     * Returns the same elements if they match the specified tag and namespace.
+     *
+     * @param elements  The current elements.
+     * @param tagName   The expected tag name, or "*" to match any tag.
+     * @param namespace The expected namespace, or null to ignore namespace.
+     * @return A filtered list of matching elements.
+     */
     private List<XMLElement> selfAxis(List<XMLElement> elements, String tagName, String namespace) {
         return filterElements(elements, tagName, namespace, null);
     }
 
+    /**
+     * Finds all descendant elements matching the specified tag and namespace.
+     *
+     * @param elements  The starting elements.
+     * @param tagName   The expected tag name, or "*" to match any tag.
+     * @param namespace The expected namespace, or null to ignore namespace.
+     * @param filter    An optional filter to apply.
+     * @return A list of matching descendant elements.
+     */
     private List<XMLElement> descendantAxis(List<XMLElement> elements, String tagName, String namespace, String[] filter) {
         List<XMLElement> results = new ArrayList<>();
         for (XMLElement element : elements) {
@@ -155,6 +236,15 @@ public class XPathCommand implements Command {
         return results;
     }
 
+    /**
+     * Recursively adds all matching descendants of an element to a result list.
+     *
+     * @param element   The root element to search.
+     * @param tagName   The expected tag name, or "*" to match any tag.
+     * @param namespace The expected namespace, or null to ignore namespace.
+     * @param filter    An optional filter to apply.
+     * @param results   The list to which matching descendants will be added.
+     */
     private void getDescendants(XMLElement element, String tagName, String namespace, String[] filter, List<XMLElement>results) {
         for (XMLElement child : element.getChildren()) {
             if (matchesNamespaceAndTag(child, namespace, tagName) && (filter == null || matchesFilter(child, filter[0], filter[1]))) {
@@ -164,6 +254,14 @@ public class XPathCommand implements Command {
         }
     }
 
+    /**
+     * Finds the parents of the given elements that match the specified tag and namespace.
+     *
+     * @param elements  The elements for which to find parents.
+     * @param tagName   The expected tag name, or "*" to match any tag.
+     * @param namespace The expected namespace, or null to ignore namespace.
+     * @return A list of matching parent elements.
+     */
     private List<XMLElement> parentAxis(List<XMLElement> elements, String tagName, String namespace) {
         Set<XMLElement> results = new LinkedHashSet<>();
         for (XMLElement element : elements) {
@@ -175,6 +273,14 @@ public class XPathCommand implements Command {
         return new ArrayList<>(results);
     }
 
+    /**
+     * Finds all ancestors of the given elements that match the specified tag and namespace.
+     *
+     * @param elements  The elements for which to find ancestors.
+     * @param tagName   The expected tag name, or "*" to match any tag.
+     * @param namespace The expected namespace, or null to ignore namespace.
+     * @return A list of matching ancestor elements.
+     */
     private List<XMLElement> ancestorAxis(List<XMLElement> elements, String tagName, String namespace) {
         Set<XMLElement> results = new LinkedHashSet<>();
         for (XMLElement element : elements) {
@@ -189,7 +295,16 @@ public class XPathCommand implements Command {
         return new ArrayList<>(results);
     }
 
-    private List<XMLElement> findMatchingElements(List<XMLElement> parents, String tagName, String namespace, String[] filter) {
+    /**
+     * Finds direct children of the current elements that match the specified tag, namespace, and optional filter.
+     *
+     * @param parents   The parent elements.
+     * @param tagName   The expected tag name, or "*" to match any tag.
+     * @param namespace The expected namespace, or null to ignore namespace.
+     * @param filter    An optional filter to apply.
+     * @return A list of matching child elements.
+     */
+    private List<XMLElement> childAxis(List<XMLElement> parents, String tagName, String namespace, String[] filter) {
         List<XMLElement> results = new ArrayList<>();
         for (XMLElement parent : parents) {
             results.addAll(filterElements(parent.getChildren(), tagName, namespace, filter));
@@ -197,6 +312,15 @@ public class XPathCommand implements Command {
         return results;
     }
 
+    /**
+     * Filters a list of elements based on tag name, namespace, and optional filter.
+     *
+     * @param elements  The elements to filter.
+     * @param tagName   The expected tag name, or "*" to match any tag.
+     * @param namespace The expected namespace, or null to ignore namespace.
+     * @param filter    An optional filter to apply.
+     * @return A list of elements that match the given criteria.
+     */
     private List<XMLElement> filterElements(List<XMLElement> elements, String tagName, String namespace, String[] filter) {
         List<XMLElement> results = new ArrayList<>();
         for (XMLElement element : elements) {
@@ -208,6 +332,14 @@ public class XPathCommand implements Command {
         return results;
     }
 
+    /**
+     * Checks if an element matches a filter condition based on an attribute or text content.
+     *
+     * @param element    The element to check.
+     * @param filterKey  The filter key, which can be an attribute name or a tag name.
+     * @param filterValue The expected value for the attribute or text.
+     * @return True if the element matches the filter, otherwise false.
+     */
     private boolean matchesFilter(XMLElement element, String filterKey, String filterValue) {
         String[] parts = filterKey.split(":", 2);
         String namespace = parts.length == 2 ? parts[0] : null;
@@ -225,6 +357,13 @@ public class XPathCommand implements Command {
         return false;
     }
 
+    /**
+     * Returns a single element from a list at a specified index, if within bounds.
+     *
+     * @param elements The list of elements to filter.
+     * @param index    The zero-based index to select.
+     * @return A list containing only the selected element, or an empty list if the index is out of bounds.
+     */
     private List<XMLElement> filterByIndex(List<XMLElement> elements, int index) {
         if (index >= 0 && index < elements.size()) {
             return List.of(elements.get(index));

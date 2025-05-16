@@ -11,11 +11,24 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
+/**
+ * Handles user commands for the XML parser application.
+ * <p>
+ * This class is responsible for managing the available commands, parsing user input,
+ * and executing the appropriate command based on the input. It also maintains the
+ * association between command names and their corresponding implementations.
+ */
 public class CommandHandler {
     private final XMLDocument xmlDocument;
     private final Map<String, Command> commands;
     Scanner scanner = new Scanner(System.in);
 
+    /**
+     * Initializes the command handler with a reference to the XML document being managed.
+     * It also registers all supported commands.
+     *
+     * @param xmlDocument The XML document that commands will operate on.
+     */
     public CommandHandler(XMLDocument xmlDocument) {
         this.xmlDocument = xmlDocument;
         this.commands = new HashMap<>();
@@ -37,6 +50,15 @@ public class CommandHandler {
         commands.put(CommandName.XPATH.getCommandName(), new XPathCommand());
     }
 
+    /**
+     * Executes a command based on the provided command name and arguments.
+     * <p>
+     * If the command is not recognized, an error message is displayed. If the command
+     * is an exit command, the input scanner is closed, and the program terminates.
+     *
+     * @param commandName The name of the command to execute.
+     * @param args        The arguments for the command.
+     */
     public void executeCommand(String commandName, String[] args) {
         Command command = commands.get(commandName);
         if (command != null) {
@@ -49,6 +71,11 @@ public class CommandHandler {
         }
     }
 
+    /**
+     * Continuously reads user input, parses it into commands, and executes them.
+     * <p>
+     * This method handles the main command loop for the application.
+     */
     public void run() {
         System.out.println("Enter a command: ");
         String input = scanner.nextLine().trim();

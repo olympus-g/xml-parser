@@ -4,7 +4,23 @@ import bg.tu_varna.sit.a1.f23621653.models.XMLDocument;
 import bg.tu_varna.sit.a1.f23621653.models.XMLElement;
 import bg.tu_varna.sit.a1.f23621653.commands.contracts.Command;
 
+/**
+ * Command to print the text content of a specified XML element.
+ */
 public class TextCommand implements Command {
+    /**
+     * Executes the text command.
+     * <p>
+     * Expects exactly one argument:
+     * <ul>
+     *     <li>id - The ID of the element whose text content will be printed.</li>
+     * </ul>
+     * Prints the text content of the element if present,
+     * otherwise informs that the element has no text.
+     *
+     * @param args        Command arguments: element id.
+     * @param xmlDocument The XMLDocument containing the elements.
+     */
     @Override
     public void execute(String[] args, XMLDocument xmlDocument) {
         if (args.length != 1) {

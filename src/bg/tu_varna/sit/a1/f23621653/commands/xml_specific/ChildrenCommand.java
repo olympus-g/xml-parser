@@ -7,7 +7,22 @@ import bg.tu_varna.sit.a1.f23621653.commands.contracts.Command;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Command to list all children of a specified XML element,
+ * printing each child's tag name along with its attributes.
+ */
 public class ChildrenCommand implements Command {
+    /**
+     * Executes the children command. Expects exactly one argument:
+     * <ul>
+     *     <li>id - The ID of the parent element.</li>
+     * </ul>
+     * Prints an error if the element is not found or if it has no children.
+     * Otherwise, prints each child's tag and attributes in a formatted style.
+     *
+     * @param args        Command arguments: the parent element id.
+     * @param xmlDocument The XMLDocument to operate on.
+     */
     @Override
     public void execute(String[] args, XMLDocument xmlDocument) {
         if (args.length != 1) {
