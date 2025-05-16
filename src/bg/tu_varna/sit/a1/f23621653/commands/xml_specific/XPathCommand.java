@@ -65,11 +65,9 @@ public class XPathCommand implements Command {
             String attributeAccess = extractAttributeAccess(part);
             String[] filter = extractFilter(part);
 
-            Axis axis;
-            try {
-                axis= Axis.fromString(axisName);
-            }catch (IllegalArgumentException e){
-                System.out.println(e.getMessage());
+            Axis axis = Axis.fromString(axisName);
+            if (axis == null) {
+                System.out.println("Unknown axis: " + axisName);
                 return new ArrayList<>();
             }
 
@@ -89,9 +87,6 @@ public class XPathCommand implements Command {
                 case DESCENDANT:
                     currentElements = descendantAxis(currentElements, tagName, namespace, filter);
                     break;
-                default:
-                    System.out.println("Unknown axis: " + axis);
-                    return new ArrayList<>();
             }
 
             if (index != null) {
