@@ -20,7 +20,7 @@ public class PrintCommand implements Command {
     @Override
     public void execute(String[] args, XMLDocument xmlDocument) {
         if (xmlDocument.getRoot() == null) {
-            System.out.print("No XML document loaded.");
+            System.out.print("No XML document loaded.\n");
             return;
         }
         System.out.println("Formatted XML output:\n");

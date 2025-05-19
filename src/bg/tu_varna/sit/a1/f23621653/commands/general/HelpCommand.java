@@ -23,12 +23,12 @@ public class HelpCommand implements Command {
         System.out.println("open <file>            - Opens <file>.");
         System.out.println("close                  - Closes the currently opened file.");
         System.out.println("save                   - Saves the currently open file.");
-        System.out.println("saveas <file>          - Saves  the currently open file in <file>.");
+        System.out.println("saveas <file>          - Saves the currently open file in <file>.");
         System.out.println("help                   - Prints this information.");
         System.out.println("print                  - Prints the XML structure.");
         System.out.println("select <id> <key>      - Gets an attribute.");
         System.out.println("set <id> <key> <value> - Sets an attribute.");
-        System.out.println("children <id>          - Lists child elements.");
+        System.out.println("children <id>          - Lists attributes of child elements.");
         System.out.println("child <id> <n>         - Gets nth child of element.");
         System.out.println("text <id>              - Gets text of element.");
         System.out.println("delete <id> <key>      - Deletes an attribute.");
