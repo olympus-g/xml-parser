@@ -140,18 +140,19 @@ public class XMLDocument {
                 String finalId;
 
                 if (rawId != null) {
-                    if (!existingIds.contains(rawId)) {
-                        finalId = rawId;
-                    } else {
+                    if (existingIds.contains(rawId)) {
                         int count = duplicateCountMap.getOrDefault(rawId, 1);
                         finalId = rawId + "_" + count;
                         duplicateCountMap.put(rawId, count + 1);
+                    } else {
+                        finalId = rawId;
+                        duplicateCountMap.put(rawId, 1);
                     }
+                    existingIds.add(rawId);
                 } else {
                     finalId = "auto_id_" + autoIdCounter++;
                 }
-
-                existingIds.add(finalId);
+                attributes.put("id", finalId);
 
                 XMLElement newElement = new XMLElement(finalId);
                 newElement.setNamespace(namespace);

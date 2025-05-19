@@ -71,23 +71,13 @@ public class XPathCommand implements Command {
                 return new ArrayList<>();
             }
 
-            switch (axis) {
-                case SELF:
-                    currentElements = selfAxis(currentElements, tagName, namespace);
-                    break;
-                case CHILD:
-                    currentElements = childAxis(currentElements, tagName, namespace, filter);
-                    break;
-                case PARENT:
-                    currentElements = parentAxis(currentElements, tagName, namespace);
-                    break;
-                case ANCESTOR:
-                    currentElements = ancestorAxis(currentElements, tagName, namespace);
-                    break;
-                case DESCENDANT:
-                    currentElements = descendantAxis(currentElements, tagName, namespace, filter);
-                    break;
-            }
+            currentElements = switch (axis) {
+                case SELF -> selfAxis(currentElements, tagName, namespace);
+                case CHILD -> childAxis(currentElements, tagName, namespace, filter);
+                case PARENT -> parentAxis(currentElements, tagName, namespace);
+                case ANCESTOR -> ancestorAxis(currentElements, tagName, namespace);
+                case DESCENDANT -> descendantAxis(currentElements, tagName, namespace, filter);
+            };
 
             if (index != null) {
                 currentElements = filterByIndex(currentElements, index);
