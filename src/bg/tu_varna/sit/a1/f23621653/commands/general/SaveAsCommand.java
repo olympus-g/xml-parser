@@ -25,6 +25,12 @@ public class SaveAsCommand implements Command {
             return;
         }
         String filePath = args[0];
+
+        if(!filePath.endsWith(".xml")){
+            filePath+=".xml";
+            System.out.println("File extension '.xml' was automatically appended.");
+        }
+
         xmlDocument.saveToFile(filePath);
         System.out.println("Successfully saved file");
     }

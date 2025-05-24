@@ -26,6 +26,12 @@ public class OpenCommand implements Command {
             return;
         }
         String filePath = args[0];
+
+        if(!filePath.endsWith(".xml")){
+            System.out.println("Only .xml files can be opened.");
+            return;
+        }
+
         File file = new File(filePath);
         System.out.println("Looking for file at: " + file.getAbsolutePath());
 
