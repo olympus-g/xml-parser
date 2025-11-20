@@ -136,6 +136,8 @@ Attribute updated successfully
 - No external XML libraries are used.
 ---
 ## How to Run
-**1.** Clone the repository.
-**2.** Compile the project.
-**3.** Run the application.
+1. **Clone the repository.**
+
+2. **Compile the project.**
+
+3. **Run the application.**
